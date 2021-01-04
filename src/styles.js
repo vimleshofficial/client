@@ -11,6 +11,10 @@ export default makeStyles(() => ({
   },
   heading: {
     color: 'rgba(0,183,255, 1)',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft:'20px'
   },
   image: {
     marginLeft: '15px',
