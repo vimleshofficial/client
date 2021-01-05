@@ -5,27 +5,26 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment'
 import useStyle from './styles';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux'
 import {deletePost,likePost} from '../../../actions/posts';
 
 
 const Post=({post,setCurrentId})=>{
     const classes=useStyle();
     const dispatch=useDispatch();
-
-
+    const {user}=useSelector((state)=>state);
     return(
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.selectedFile}  title={post.title} />
-            <div className={classes.overlay}>
+             <div className={classes.overlay}>
                 <Typography variant="h6" >{post.creator}</Typography>
                 <Typography variant="body2" >{moment(post.date).fromNow()}</Typography>   
-            </div>
-             <div className={classes.overlay2}>
+             </div>
+             {user.isAuthenticated && <div className={classes.overlay2}>
                 <Button style={{color:'white',}} size="small"  onClick={()=>setCurrentId(post._id)}>
                     <MoreHorizIcon fontSize="default"/>
                 </Button>
-            </div>
+             </div>}
             <div className={classes.details}>
                 <Typography variant="body2"  color="textSecondary">{post.tags.map((tag)=>`#${tag} `)}</Typography>
             </div>
@@ -33,7 +32,7 @@ const Post=({post,setCurrentId})=>{
             <CardContent>
                 <Typography  variant="body2" component="p" color="textSecondary" gutterBottom >{post.description}</Typography>
             </CardContent>
-            <CardActions  className={classes.cardActions}>
+            {user.isAuthenticated && <CardActions  className={classes.cardActions}>
                 <Button size="small" color="primary" onClick={()=>dispatch(likePost(post._id))}>
                     <ThumbUpAltIcon fontSize="small" />
                     Like
@@ -43,7 +42,7 @@ const Post=({post,setCurrentId})=>{
                     <DeleteIcon fontSize="small" />
                     Delete
                 </Button>
-            </CardActions>            
+            </CardActions>}            
         </Card>
     );
 }

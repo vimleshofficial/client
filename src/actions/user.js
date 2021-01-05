@@ -9,8 +9,7 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL,
-    LOGIN
+    REGISTER_FAIL
 } from '../constants/actionTypes';
 
 //Register User
@@ -27,24 +26,34 @@ export const userRegister=(userData)=>async(dispatch)=>{
 }
 
 
-export const userLogin=(userData)=>async(dispatch)=>{    
+export const userLogin=(userData)=>async(dispatch)=>{ 
+
     try{
         const {data}=await api.userLogin(userData);
-        dispatch({type:LOGIN,payload:data});
+        dispatch({type:LOGIN_SUCCESS,payload:data});
+        dispatch(clearErrors());
     }catch(error){
+        dispatch(returnErrors(error.response.data,error.response.status,'LOGIN_FAIL'));
+        dispatch({type:LOGIN_FAIL});
         console.log(error.message);
     }
 }
 
+export const logout=()=>async(dispatch)=>{
+    try{    
+       dispatch({type:LOGOUT_SUCCESS});    
+    }catch(error){
+        console.log(error);
+    }
+}
 
 //Check token & load user
 export const loadUser=()=>async(dispatch,getState)=>{
     //User loading
     dispatch({type:USER_LOADING});
-
-    try{
-        
+    try{        
         const {data}=await api.getUser(tokenConfig(getState));  
+       // console.log(data);        
         dispatch({type:USER_LOADED,payload:data});
     }catch(error){        
         dispatch(returnErrors(error.response.data,error.response.status));

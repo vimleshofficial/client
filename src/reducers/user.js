@@ -1,5 +1,3 @@
-import {LOGIN} from '../constants/actionTypes';
-
 import {
         USER_LOADED,
         USER_LOADING,
@@ -20,14 +18,14 @@ const initialState={
 };
 
 const user= (state=initialState,action)=>{
+        
     switch(action.type){           
-            case USER_LOADING:
+            case USER_LOADING:                
                 return {
                     ...state,
                     isLoading:true,
-
                 };
-            case USER_LOADED:
+            case USER_LOADED:                      
                 return {
                     ...state,
                     isAuthenticated:true,
@@ -46,7 +44,7 @@ const user= (state=initialState,action)=>{
             case AUTH_ERROR:
             case LOGIN_FAIL:
             case LOGOUT_SUCCESS:
-            case REGISTER_FAIL:
+            case REGISTER_FAIL:             
                 localStorage.removeItem('token');
                 return {
                 ...state,
@@ -54,9 +52,7 @@ const user= (state=initialState,action)=>{
                 isAuthenticated:false,
                 isLoading:false,
                 user:null
-            };                      
-            case LOGIN:
-                return [...state,action.payload];
+            };  
             default:
                 return state;
     }

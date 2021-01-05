@@ -1,31 +1,43 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import {useHistory } from "react-router-dom";
 import {TextField,Button,Typography,Paper} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import {useDispatch,useSelector} from 'react-redux'
 import {userLogin } from "../../actions/user";
 import useStyle from '../Form/styles';
 
-const LoginForm=()=>{
+const LoginModal=()=>{
     const [userData,setUserData]=useState({email:"",password:""});
+    const [msg,setMsg]=useState(null);
+
+    
     const dispatch=useDispatch();
     const classes=useStyle();
-
+   
     const history = useHistory();
-    // const user=useSelector((state)=>state);
-    // console.log(user);
-
+    const {error,user}=useSelector((state)=>state);
+    
+    useEffect(() => {        
+        if(error.id==="LOGIN_FAIL"){
+            setMsg(error.msg);
+        }
+        else{           
+            setMsg(null);
+            if(user.isAuthenticated)
+            history.push('/');            
+        }
+      },[error,setMsg,history,user]);
     const handleSubmit=(e)=>{
         e.preventDefault();
         dispatch(userLogin(userData));
-        //setToken(user);
-        history.push("/");
     }
     
     
         return (
             <div className={classes.form}>
             <Paper className={classes.paper}>
-                <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
+                {msg && (<Alert severity="error">{msg}</Alert>)}
+                {!user.isAuthenticated && <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                     <Typography variant="h6">Login</Typography>
                     <TextField 
                         name="email" 
@@ -54,10 +66,10 @@ const LoginForm=()=>{
                     >Submit
                     </Button>
                     
-                </form>
+                </form>}
             </Paper>
         </div>
         );
 }
 
-export default LoginForm;
+export default LoginModal;
