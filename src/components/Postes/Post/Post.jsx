@@ -9,7 +9,7 @@ import {useDispatch} from 'react-redux';
 import {deletePost,likePost} from '../../../actions/posts';
 
 
-const Post=({token,post,setCurrentId})=>{
+const Post=({post,setCurrentId})=>{
     const classes=useStyle();
     const dispatch=useDispatch();
 
@@ -21,11 +21,11 @@ const Post=({token,post,setCurrentId})=>{
                 <Typography variant="h6" >{post.creator}</Typography>
                 <Typography variant="body2" >{moment(post.date).fromNow()}</Typography>   
             </div>
-            {token &&  <div className={classes.overlay2}>
+             <div className={classes.overlay2}>
                 <Button style={{color:'white',}} size="small"  onClick={()=>setCurrentId(post._id)}>
                     <MoreHorizIcon fontSize="default"/>
                 </Button>
-            </div>}
+            </div>
             <div className={classes.details}>
                 <Typography variant="body2"  color="textSecondary">{post.tags.map((tag)=>`#${tag} `)}</Typography>
             </div>
@@ -34,15 +34,15 @@ const Post=({token,post,setCurrentId})=>{
                 <Typography  variant="body2" component="p" color="textSecondary" gutterBottom >{post.description}</Typography>
             </CardContent>
             <CardActions  className={classes.cardActions}>
-                {token && <Button size="small" color="primary" onClick={()=>dispatch(likePost(post._id))}>
+                <Button size="small" color="primary" onClick={()=>dispatch(likePost(post._id))}>
                     <ThumbUpAltIcon fontSize="small" />
                     Like
                     {post.likeCount}
-                </Button>}
-                {token && <Button size="small" color="primary" onClick={()=>dispatch(deletePost(post._id))}>
+                </Button>
+                <Button size="small" color="primary" onClick={()=>dispatch(deletePost(post._id))}>
                     <DeleteIcon fontSize="small" />
                     Delete
-                </Button>}
+                </Button>
             </CardActions>            
         </Card>
     );

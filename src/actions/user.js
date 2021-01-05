@@ -1,11 +1,73 @@
 import * as api from '../api';
-import {LOGIN} from '../constants/actionTypes';
+import {returnErrors,clearErrors} from '../actions/error';
 
-export const userLogin=(userData)=>async(dispatch)=>{
+import {
+    USER_LOADED,
+    USER_LOADING,
+    AUTH_ERROR,
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGOUT_SUCCESS,
+    REGISTER_SUCCESS,
+    REGISTER_FAIL,
+    LOGIN
+} from '../constants/actionTypes';
+
+//Register User
+export const userRegister=(userData)=>async(dispatch)=>{    
+    try{
+        const {data}=await api.userRegister(userData);        
+        dispatch({type:REGISTER_SUCCESS,payload:data});
+        dispatch(clearErrors());
+    }catch(error){
+        dispatch(returnErrors(error.response.data,error.response.status,'REGISTER_FAIL'));
+        dispatch({type:REGISTER_FAIL});
+        console.log(error.message);
+    }
+}
+
+
+export const userLogin=(userData)=>async(dispatch)=>{    
     try{
         const {data}=await api.userLogin(userData);
         dispatch({type:LOGIN,payload:data});
     }catch(error){
         console.log(error.message);
     }
+}
+
+
+//Check token & load user
+export const loadUser=()=>async(dispatch,getState)=>{
+    //User loading
+    dispatch({type:USER_LOADING});
+
+    try{
+        
+        const {data}=await api.getUser(tokenConfig(getState));  
+        dispatch({type:USER_LOADED,payload:data});
+    }catch(error){        
+        dispatch(returnErrors(error.response.data,error.response.status));
+        dispatch({type:AUTH_ERROR});
+    }
+   
+}
+
+export const tokenConfig = getState=>{
+    //Get Token Form Localestorage
+    const token = getState().user.token;
+    
+    //Headers
+    const config ={
+        headers:{
+            "Content-type":"application"
+        }
+    }
+
+    //IF token add to headers
+    if(token){
+        config.headers['auth-token']=token;
+    }
+    config.headers['auth-token']=token;
+    return config;
 }

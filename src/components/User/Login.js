@@ -1,23 +1,23 @@
 import React,{useState} from "react";
-import { useHistory } from "react-router-dom";
+import {useHistory } from "react-router-dom";
 import {TextField,Button,Typography,Paper} from '@material-ui/core';
 import {useDispatch,useSelector} from 'react-redux'
 import {userLogin } from "../../actions/user";
-import useStyle from './styles';
+import useStyle from '../Form/styles';
 
-const LoginForm=({setToken})=>{
+const LoginForm=()=>{
     const [userData,setUserData]=useState({email:"",password:""});
     const dispatch=useDispatch();
     const classes=useStyle();
 
     const history = useHistory();
-    const user=useSelector((state)=>state.user);
-
+    // const user=useSelector((state)=>state);
+    // console.log(user);
 
     const handleSubmit=(e)=>{
         e.preventDefault();
         dispatch(userLogin(userData));
-        setToken(user);
+        //setToken(user);
         history.push("/");
     }
     

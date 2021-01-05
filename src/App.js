@@ -3,19 +3,24 @@ import {Container,AppBar,Typography,Grow,Grid,Button,Menu,MenuItem} from '@mater
 import {useDispatch} from 'react-redux';
 import {BrowserRouter as Router,Switch,Route,Link} from 'react-router-dom';
 import {getPosts} from './actions/posts';
+import {loadUser} from './actions/user';
 import Form from './components/Form/Form';
 import Posts from './components/Postes/Posts';
-import LoginForm from './components/Form/Login'
+import LoginForm from './components/User/Login';
+import RegisterModal from './components/User/RegisterModal'
 import useStyle from './styles';
 import memories from './images/memories.jpg';
 
 const App=()=> {
   const [currentId,setCurrentId]=useState(null);
-  const [token,setToken]=useState(null);
+  //const [token,setToken]=useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const classes=useStyle();
   const dispatch=useDispatch();
 
+  useEffect(() => {
+    dispatch(loadUser());
+  });
   useEffect(()=>{
     dispatch(getPosts());
   },[currentId,dispatch]);
@@ -56,11 +61,9 @@ const App=()=> {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem><Link to='/'>Home</Link></MenuItem>
-                  {!token?
-                       <MenuItem><Link to='/login'>Login</Link></MenuItem>
-                      :<MenuItem onClick={()=>setToken(null)}>Logout</MenuItem>
-                  }
+                  <MenuItem><Link to='/'>Home</Link></MenuItem>                  
+                  <MenuItem><Link to='/login'>Login</Link></MenuItem>
+                  <MenuItem><Link to='/register'>Register</Link></MenuItem>
                 </Menu>                
               </Grid>              
             </AppBar>
@@ -70,7 +73,7 @@ const App=()=> {
                   <Container>
                       <Grid container justify="space-between" alignItems="stretch" spacing={3}>
                           <Grid item xs={12} sm={7} >
-                              <Posts token={token} setCurrentId={setCurrentId} />
+                              <Posts setCurrentId={setCurrentId} />
                           </Grid>
                           <Grid item xs={12} sm={4} >
                               <Form currentId={currentId} setCurrentId={setCurrentId}/>                              
@@ -79,7 +82,8 @@ const App=()=> {
                   </Container>
                 </Grow>  
               </Route>   
-             {!token && <Route path="/login" render={({ match }) => <LoginForm setToken={setToken}/>}/>}
+             <Route path="/login" render={({ match }) => <LoginForm/>}/>
+             <Route path="/register" render={({ match }) => <RegisterModal/>}/>
             </Switch>            
           </Container>
       </div>
