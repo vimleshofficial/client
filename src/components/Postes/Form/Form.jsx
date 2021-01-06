@@ -6,41 +6,50 @@ import {
         Dialog,
         DialogContent,
         DialogTitle,
-        DialogActions
+        DialogActions,
+        RadioGroup,
+        Radio,
+        FormControl,
+        FormControlLabel
      } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import {useDispatch,useSelector} from 'react-redux'
 
 import useStyle from './styles';
-import {createPost, updatePost} from "../../actions/posts";
+import {createPost, updatePost} from "../../../actions/posts";
 
 
 
 const Form=({setCurrentId,currentId})=>{
+    
     const [postData,setPostData]=useState({
         creator:'',
         title:'',
         description:'',
         tags:'',
-        selectedFile:''
+        selectedFile:'',
+        type:'public'
     });
     const [open, setOpen] = useState(false);
 
     const post=useSelector((state)=>currentId?state.posts.find((p)=> p._id===currentId):null);
     const {user}=useSelector((state)=>state);
+    //console.log(error);
     const classes=useStyle();
     const dispatch=useDispatch();
 
     useEffect(()=>{
-        if(post) setPostData(post);
+        if(post) 
+         setPostData(post);
         if(currentId) handleClickOpen();
-    },[post,currentId]);
+    },[post,currentId]);   
 
-    const handleSubmit=(e)=>{
+    const handleSubmit=(e)=>{        
        e.preventDefault();
        if(currentId){
             dispatch(updatePost(currentId,postData));            
         }else{
+
            dispatch(createPost(postData));          
        }
        clear();
@@ -53,7 +62,8 @@ const Form=({setCurrentId,currentId})=>{
             title:'',
             description:'',
             tags:'',
-            selectedFile:''
+            selectedFile:'',
+            type:'public'
         });
     }
 
@@ -75,16 +85,8 @@ const Form=({setCurrentId,currentId})=>{
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>{currentId?"Editing":"Creating"} A Memory </DialogTitle>
                 <DialogContent>
                     <Paper className={classes.paper}>
-                        <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
+                        <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>                            
                             
-                            <TextField 
-                                name="creator" 
-                                variant="outlined" 
-                                label="Creator"
-                                fullWidth
-                                value={postData.creator}
-                                onChange={(e)=>setPostData({...postData,creator:e.target.value})}
-                            />
                             <TextField 
                                 name="title" 
                                 variant="outlined" 
@@ -118,6 +120,12 @@ const Form=({setCurrentId,currentId})=>{
                                     }}
                                 />
                             </div>
+                            <FormControl  component="fieldset" style={{display:'flex',flexDirection: 'row',width: '100%'}}>                                
+                                <RadioGroup style={{display:'flex',flexDirection: 'row'}} aria-label="Type" name="type" value={postData.type} onChange={(e)=>setPostData({...postData,type:e.target.value})}>
+                                    <FormControlLabel value="public" control={<Radio />} label="Public" />
+                                    <FormControlLabel value="private" control={<Radio />} label="Private" />                                    
+                                </RadioGroup>
+                            </FormControl>
                         <Button 
                                 className={classes.buttonSubmit} 
                                 variant="contained" 

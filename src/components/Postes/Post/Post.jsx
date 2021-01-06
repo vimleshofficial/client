@@ -9,19 +9,25 @@ import {useDispatch,useSelector} from 'react-redux'
 import {deletePost,likePost} from '../../../actions/posts';
 
 
+
 const Post=({post,setCurrentId})=>{
     const classes=useStyle();
     const dispatch=useDispatch();
     const {user}=useSelector((state)=>state);
-    //console.log(error,user);
+    //console.log(post);
     return(
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.selectedFile}  title={post.title} />
              <div className={classes.overlay}>
-                <Typography variant="h6" >{post.creator}</Typography>
+               {
+                (user.isAuthenticated && user.user.id===post.creator) ? 
+                <Typography variant="h6" >{user.user.name}</Typography>
+                :
+                <Typography variant="h6" >{post.userinfo[0].name}</Typography>                
+                }
                 <Typography variant="body2" >{moment(post.date).fromNow()}</Typography>   
              </div>
-             {user.isAuthenticated && <div className={classes.overlay2}>
+             {(user.isAuthenticated && user.user.id===post.creator) &&  <div className={classes.overlay2}>
                 <Button style={{color:'white',}} size="small"  onClick={()=>setCurrentId(post._id)}>
                     <MoreHorizIcon fontSize="default"/>
                 </Button>
@@ -39,10 +45,10 @@ const Post=({post,setCurrentId})=>{
                     Like
                     {post.likeCount}
                 </Button>
-                <Button size="small" color="primary" onClick={()=>dispatch(deletePost(post._id))}>
+                {(user.isAuthenticated && user.user.id===post.creator) && <Button size="small" color="primary" onClick={()=>dispatch(deletePost(post._id))}>
                     <DeleteIcon fontSize="small" />
                     Delete
-                </Button>
+                </Button>}
             </CardActions>}            
         </Card>
     );

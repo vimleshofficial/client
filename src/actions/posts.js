@@ -29,6 +29,7 @@ export const createPost=(post)=>async(dispatch,getState)=>{
 export const updatePost=(id,post)=>async(dispatch,getState)=>{
     try{
         const {data}=await api.updatePost(id, post,tokenConfig(getState));
+        
         dispatch({type:UPDATE,payload:data});
     }catch(error){
         dispatch(returnErrors(error.response.data,error.response.status));

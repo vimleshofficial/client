@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from "react";
+import {useHistory } from "react-router-dom";
 import {TextField,Button,Typography,Paper,} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import {useDispatch,useSelector} from 'react-redux';
@@ -11,15 +12,18 @@ const RegisterModal=()=>{
     const dispatch=useDispatch();
     const state=useSelector((state)=>state);    
     const classes=useStyle();
+    const history = useHistory();
     useEffect(() => {        
         if(state.error.id==="REGISTER_FAIL"){
             setMsg(state.error.msg);
         }
         else{
             setMsg(null);
-            
+            if(state.user.isAuthenticated)
+            history.push('/');    
         }
-      },[state,setMsg]);
+      },[state,setMsg,history]);
+
     const handleSubmit=(e)=>{
         e.preventDefault();
         dispatch(userRegister(userData));        

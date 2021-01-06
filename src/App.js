@@ -4,14 +4,14 @@ import {useDispatch} from 'react-redux';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import {getPosts} from './actions/posts';
 import {loadUser} from './actions/user';
-import Form from './components/Form/Form';
+import Form from './components/Postes/Form/Form';
 import Posts from './components/Postes/Posts';
 import LoginModal from './components/User/LoginModal';
 import RegisterModal from './components/User/RegisterModal'
 import Nav from './components/Nav';
-
+ 
 const App=()=> {
-  const [currentId,setCurrentId]=useState(null);
+  const [currentId,setCurrentId]=useState(null); 
 
   
   const dispatch=useDispatch();

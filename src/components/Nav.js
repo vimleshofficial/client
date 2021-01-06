@@ -31,7 +31,7 @@ const Nav= ()=>{
         history.push("/login");
     }
     const {isAuthenticated,user}=state.user;
-
+        //console.log(isAuthenticated,user);
         return(
             <>
                 <AppBar position="static" className={classes.appBar} color="inherit">              
@@ -40,7 +40,7 @@ const Nav= ()=>{
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            {user && <span>Welcome {user.name}</span>}
+                            {isAuthenticated ? <span>Welcome {user.name}</span>:<span>Welcome As Guest</span>}
                         </Typography>
                         <Link to='/'><Button color="inherit">Home</Button></Link>
                         {!isAuthenticated && 

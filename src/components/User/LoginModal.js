@@ -4,7 +4,7 @@ import {TextField,Button,Typography,Paper} from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import {useDispatch,useSelector} from 'react-redux'
 import {userLogin } from "../../actions/user";
-import useStyle from '../Form/styles';
+import useStyle from './styles';
 
 const LoginModal=()=>{
     const [userData,setUserData]=useState({email:"",password:""});
