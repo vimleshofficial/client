@@ -68,15 +68,13 @@ export const tokenConfig = getState=>{
     
     //Headers
     const config ={
-        headers:{
-            "Content-type":"application"
-        }
+        headers:{}
     }
 
     //IF token add to headers
     if(token){
         config.headers['auth-token']=token;
     }
-    config.headers['auth-token']=token;
+    //config.headers['auth-token']=token;
     return config;
 }

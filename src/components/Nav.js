@@ -30,7 +30,7 @@ const Nav= ()=>{
         dispatch(logout());
         history.push("/login");
     }
-    const {isAuthenticated}=state.user;
+    const {isAuthenticated,user}=state.user;
 
         return(
             <>
@@ -40,7 +40,7 @@ const Nav= ()=>{
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            News
+                            {user && <span>Welcome {user.name}</span>}
                         </Typography>
                         <Link to='/'><Button color="inherit">Home</Button></Link>
                         {!isAuthenticated && 

@@ -13,6 +13,7 @@ const Post=({post,setCurrentId})=>{
     const classes=useStyle();
     const dispatch=useDispatch();
     const {user}=useSelector((state)=>state);
+    //console.log(error,user);
     return(
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.selectedFile}  title={post.title} />
