@@ -4,11 +4,13 @@ import {useDispatch} from 'react-redux';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import {getPosts} from './actions/posts';
 import {loadUser} from './actions/user';
+import {getShopData} from './actions/shop';
 import Form from './components/Postes/Form/Form';
 import Posts from './components/Postes/Posts';
 import LoginModal from './components/User/LoginModal';
 import RegisterModal from './components/User/RegisterModal'
 import Nav from './components/Nav';
+import Categories from './components/Shop/Categories/Categories';
  
 const App=()=> {
   const [currentId,setCurrentId]=useState(null); 
@@ -17,6 +19,7 @@ const App=()=> {
   const dispatch=useDispatch();
   useEffect(() => {
     dispatch(loadUser());
+    dispatch(getShopData());
   });
   useEffect(()=>{
     dispatch(getPosts());
@@ -44,6 +47,7 @@ const App=()=> {
               </Route>   
              <Route path="/login" render={({ match }) => <LoginModal/>}/>
              <Route path="/register" render={({ match }) => <RegisterModal/>}/>
+             <Route path="/categories" render={({ match }) => <Categories/>}/>
             </Switch>            
           </Container>
       </div>

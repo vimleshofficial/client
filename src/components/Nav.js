@@ -43,6 +43,7 @@ const Nav= ()=>{
                             {isAuthenticated ? <span>Welcome {user.name}</span>:<span>Welcome As Guest</span>}
                         </Typography>
                         <Link to='/'><Button color="inherit">Home</Button></Link>
+                        <Link to='/categories'><Button color="inherit">Categories</Button></Link> 
                         {!isAuthenticated && 
                             <Button color="inherit">
                                 <Link to='/register'>Register</Link>

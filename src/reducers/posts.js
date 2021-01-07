@@ -1,4 +1,4 @@
-  import {CREATE,FETCH_ALL,UPDATE,DELETE,LIKE} from '../constants/actionTypes'
+  import {CREATE,FETCH_ALL,UPDATE,DELETE,LIKE} from '../constants/actionTypes';
 
 
  const posts= (posts=[],action)=>{
@@ -8,7 +8,7 @@
             case UPDATE:
                 return posts.map((post)=>post._id===action.payload._id?action.payload:post);
             case LIKE:
-                return posts.map((post)=>post._id===action.payload._id?action.payload:post);
+                return posts.map((post)=>post._id===action.payload._id?{...action.payload,userinfo:post.userinfo}:post);
             case FETCH_ALL:
                 return action.payload;
             case CREATE:
