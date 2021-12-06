@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/posts";
-const userUrl = "http://localhost:5000/user";
+const url = "https://vim-memories-server.herokuapp.com/posts";
+const userUrl = "https://vim-memories-server.herokuapp.com/user";
 export const fetchPost = () => axios.get(url);
 export const createPost = (newPost, config) => axios.post(url, newPost, config);
 export const updatePost = (id, updatedPost, config) =>
